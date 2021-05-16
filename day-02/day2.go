@@ -57,7 +57,17 @@ func wrappingPaperNeeded(sortedInput [][]int) int {
 	return area
 }
 
+func ribbonNeeded(sortedInput [][]int) int {
+	length := 0
+	for _, gift := range sortedInput {
+		length += 2 * gift[0] + 2 * gift[1]
+		length += gift[0] * gift[1] * gift[2]
+	}
+	return length
+}
+
 func main() {
 	sortedInput := parseInput(getInput())
-	fmt.Println(wrappingPaperNeeded(sortedInput))
+	fmt.Printf("Wrapping Paper %d\n", wrappingPaperNeeded(sortedInput))
+	fmt.Printf("Ribbon %d\n", ribbonNeeded(sortedInput))
 }
