@@ -17,26 +17,34 @@ func getInput() string {
 	return string(bs)
 }
 
-// not super portable, but gets the job done on ARM
-func acceptableHash(hash [16]byte) bool {
-	return hash[0] == 0 && hash[1] == 0 && (hash[2]&0xf0) == 0
+// not portable, but gets the job done on ARM
+func acceptableHash(hash [16]byte, part int) bool {
+	if part == 1 {
+		return hash[0] == 0 && hash[1] == 0 && (hash[2]&0xf0) == 0
+	} else {
+		return hash[0] == 0 && hash[1] == 0 && hash[2] == 0
+	}
+}
+
+
+func findAcceptableHash(puzzle string, part int) int {
+	hashFound := false
+	fmt.Println(puzzle)
+	answer := 0
+	for n := 0; !hashFound; n++ {
+		data := fmt.Sprintf("%s%d", puzzle, n)
+		hash := md5.Sum([]byte(data))
+		hashFound = acceptableHash(hash, part)
+		if hashFound {
+			answer = n
+		}
+	}
+	return answer
+
 }
 
 func main() {
 	puzzle := getInput()
-	hashFound := false
-	fmt.Println(puzzle)
-	answer1 := 0
-	for n := 0; !hashFound; n++ {
-		data := fmt.Sprintf("%s%d", puzzle, n)
-		hash := md5.Sum([]byte(data))
-		// hashString := fmt.Sprintf("%x", hash)
-		// fmt.Println(hashString)
-		// fmt.Println(hashFound)
-		hashFound = acceptableHash(hash)
-		if hashFound {
-			answer1 = n
-		}
-	}
-	fmt.Printf("Part 1: %d\n", answer1)
+	fmt.Printf("Part 1: %d\n", findAcceptableHash(puzzle, 1))
+	fmt.Printf("Part 2: %d\n", findAcceptableHash(puzzle, 2))
 }
