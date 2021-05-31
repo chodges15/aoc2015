@@ -51,14 +51,44 @@ func niceString(str string) bool {
 	return doubleLetter && vowelsCount >= 3
 }
 
+func niceString2(str string) bool {
+	pairTwice := false
+	oneLetterBetween := false
+	for i := 2; i < len(str); i++ {
+		pair := str[i-2 : i]
+		if strings.Contains(str[i:], pair) {
+			pairTwice = true
+			fmt.Println("PairTwice")
+			break
+		}
+	}
+	if !pairTwice {
+		return false
+	}
+
+	for i := 0; i < len(str) - 2; i++ {
+		if str[i] == str[i+2] {
+			oneLetterBetween = true
+			fmt.Println("OneLetterBetween")
+			break
+		}
+	}
+
+	return pairTwice && oneLetterBetween
+}
+
 func main() {
 	puzzle := getInput()
-	var count int
+	var count1, count2 int
 	for _, str := range puzzle {
 		fmt.Println(str)
 		if niceString(str) {
-			count++
+			count1++
+		}
+		if niceString2(str) {
+			count2++
 		}
 	}
-	fmt.Printf("Part 1: %d\n", count)
+	fmt.Printf("Part 1: %d\n", count1)
+	fmt.Printf("Part 2: %d\n", count2)
 }
