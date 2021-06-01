@@ -12,6 +12,8 @@ import (
 
 var inputFile = "input1.txt"
 
+const arraySize = 1000
+
 type Command int
 
 const (
@@ -71,7 +73,7 @@ func parse(puzzle []string) []Instruction {
 	return returnList
 }
 
-func mark(array *[1000][1000]bool, instr Instruction) {
+func mark(array *[arraySize][arraySize]bool, instr Instruction) {
 	for i := instr.startX; i <= instr.endX; i++ {
 		for j := instr.startY; j <= instr.endY; j++ {
 			switch {
@@ -86,10 +88,10 @@ func mark(array *[1000][1000]bool, instr Instruction) {
 	}
 }
 
-func count(array *[1000][1000]bool) int {
+func count(array *[arraySize][arraySize]bool) int {
 	count := 0
-	for i := 0; i < 1000; i++ {
-		for j := 0; j < 1000; j++ {
+	for i := 0; i < arraySize; i++ {
+		for j := 0; j < arraySize; j++ {
 			if array[i][j] {
 				count++
 			}
@@ -99,7 +101,7 @@ func count(array *[1000][1000]bool) int {
 }
 
 func main() {
-	var twodim [1000][1000]bool
+	var twodim [arraySize][arraySize]bool
 	theInput := getInput()
 	parsed := parse(theInput)
 	for _, c := range parsed {
